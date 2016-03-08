@@ -1,0 +1,5 @@
+domains:
+  - example.com
+  - blog.example.com
+
+delay: 0.5
