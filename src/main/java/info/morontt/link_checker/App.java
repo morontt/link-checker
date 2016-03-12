@@ -13,6 +13,14 @@ import org.yaml.snakeyaml.error.YAMLException;
  * Spider link-checker
  */
 public class App {
+    protected Config config;
+    protected HttpFetcher fetcher;
+
+    public App(Config config) {
+        this.config = config;
+        fetcher = new HttpFetcher(config.domains);
+    }
+
     public static void main(String[] args) {
         System.out.println("");
         System.out.println("#");
@@ -39,6 +47,27 @@ public class App {
             return;
         }
 
-        System.out.println(config);
+        App app = new App(config);
+
+        do {
+            app.fetch();
+            app.pause();
+        } while (app.hasNextIteration());
+    }
+
+    protected void pause() {
+        try {
+            Thread.sleep((long)(1000 * config.delay));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    protected boolean hasNextIteration() {
+        return true;
+    }
+
+    protected void fetch() {
+        fetcher.fetch();
     }
 }
