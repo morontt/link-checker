@@ -163,6 +163,10 @@ class HttpFetcher {
             url = link.target + url;
         }
 
+        if (url.indexOf("#") > 0) {
+            url = url.substring(0, url.indexOf("#"));
+        }
+
         try {
             LinkPair newLink = new LinkPair(url, link.target);
             if (domains.contains(newLink.host) && !pairs.contains(newLink)) {
