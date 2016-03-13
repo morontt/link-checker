@@ -1,8 +1,16 @@
 package info.morontt.link_checker;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 class HttpFetcher {
+    private static final String DEFAULT_USER_AGENT = "link-checker";
+
     ArrayList<String> domains;
     ArrayList<LinkPair> pairs;
 
@@ -10,6 +18,7 @@ class HttpFetcher {
         String target;
         String referrer;
         boolean checked = false;
+        int responseCode;
 
         LinkPair(String t, String r) {
             target = t;
@@ -46,7 +55,7 @@ class HttpFetcher {
 
         pairs = new ArrayList<LinkPair>();
         for (String domain : domains) {
-            pairs.add(new LinkPair(domain));
+            pairs.add(new LinkPair("http://" + domain));
         }
     }
 
@@ -54,7 +63,28 @@ class HttpFetcher {
         LinkPair link = getNext();
         link.checked = true;
 
-        System.out.println("fetch: " + link.target);
+        try {
+            URL url = new URL(link.target);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestProperty("User-Agent", DEFAULT_USER_AGENT);
+
+            link.responseCode = conn.getResponseCode();
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                //System.out.println(inputLine);
+            }
+            in.close();
+            conn.disconnect();
+
+            System.out.println("success: " + link.responseCode + " " + link.target);
+        } catch (MalformedURLException e) {
+            System.err.println("error: broken URL " + link.target);
+        } catch (IOException e) {
+            System.err.println("error: " + link.responseCode + " " + link.target);
+        }
     }
 
     public boolean hasNext() {
