@@ -24,12 +24,12 @@ public class App {
     public static void main(String[] args) {
         System.out.println("");
         System.out.println("#");
-        System.out.println("#           #    #    #  #    #           ####   #    #  ######   ####   #    #");
-        System.out.println("#           #    ##   #  #   #           #    #  #    #  #       #    #  #   #");
-        System.out.println("#           #    # #  #  ####    #####   #       ######  #####   #       ####");
-        System.out.println("#           #    #  # #  #  #            #       #    #  #       #       #  #");
-        System.out.println("#           #    #   ##  #   #           #    #  #    #  #       #    #  #   #");
-        System.out.println("#######     #    #    #  #    #           ####   #    #  ######   ####   #    #");
+        System.out.println("#           #    #    #  #    #           ####   #    #  ######   ####   #    #  ######  #####");
+        System.out.println("#           #    ##   #  #   #           #    #  #    #  #       #    #  #   #   #       #    #");
+        System.out.println("#           #    # #  #  ####    #####   #       ######  #####   #       ####    #####   #    #");
+        System.out.println("#           #    #  # #  #  #            #       #    #  #       #       #  #    #       #####");
+        System.out.println("#           #    #   ##  #   #           #    #  #    #  #       #    #  #   #   #       #   #");
+        System.out.println("#######     #    #    #  #    #           ####   #    #  ######   ####   #    #  ######  #    #");
         System.out.println("");
 
         Config config;
@@ -49,10 +49,10 @@ public class App {
 
         App app = new App(config);
 
-        do {
+        while (app.hasNextIteration()) {
             app.fetch();
             app.pause();
-        } while (app.hasNextIteration());
+        }
     }
 
     protected void pause() {
@@ -64,7 +64,7 @@ public class App {
     }
 
     protected boolean hasNextIteration() {
-        return true;
+        return fetcher.hasNext();
     }
 
     protected void fetch() {
