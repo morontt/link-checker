@@ -147,6 +147,7 @@ class HttpFetcher {
             || url.indexOf("#") == 0
             || url.indexOf("mailto:") == 0
             || url.indexOf("tel:") == 0
+            || url.indexOf("javascript:") == 0
         ) {
             return;
         }
