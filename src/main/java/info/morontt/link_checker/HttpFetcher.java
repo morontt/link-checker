@@ -17,6 +17,8 @@ class HttpFetcher {
     ArrayList<LinkPair> pairs;
     Pattern linkPattern;
 
+    protected Logger logger;
+
     class LinkPair {
         String target;
         URL targetURL;
@@ -77,6 +79,10 @@ class HttpFetcher {
         linkPattern = Pattern.compile("href=(?:\"([^\"]*)\"|'([^']*)')");
     }
 
+    void setLogger(Logger logger) {
+        this.logger = logger;
+    }
+
     void fetch() {
         LinkPair link = getNext();
         link.checked = true;
@@ -104,8 +110,10 @@ class HttpFetcher {
             System.out.println("success: " + link.responseCode + " " + link.target);
         } catch (IOException e) {
             System.err.println("error: " + link.responseCode + " " + link.target + " - referrer: " + link.referrer);
+            logger.write(new String[]{link.target, link.referrer, Integer.toString(link.responseCode)});
         } catch (ClassCastException e) {
             System.err.println("error: " + link.target + " - referrer: " + link.referrer);
+            logger.write(new String[]{link.target, link.referrer, "N/A"});
         }
     }
 

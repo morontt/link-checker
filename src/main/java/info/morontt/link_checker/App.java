@@ -48,11 +48,17 @@ public class App {
         }
 
         App app = new App(config);
+        Logger logger = new CSVLogger();
+
+        logger.init();
+        app.fetcher.setLogger(logger);
 
         while (app.hasNextIteration()) {
             app.fetch();
             app.pause();
         }
+
+        logger.finish();
     }
 
     protected void pause() {
