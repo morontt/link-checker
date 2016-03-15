@@ -4,13 +4,20 @@ import com.opencsv.CSVWriter;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 class CSVLogger implements Logger {
     private CSVWriter writer;
     private String filename;
 
     public void init() {
-        filename = "log.csv";
+        filename = "errors_";
+
+        Format formatter = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        filename += formatter.format(new Date());
+        filename += ".csv";
 
         try {
             writer = new CSVWriter(new FileWriter(filename), ';');
