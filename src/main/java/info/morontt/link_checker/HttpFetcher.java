@@ -11,7 +11,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 class HttpFetcher {
-    private static final String DEFAULT_USER_AGENT = "link-checker";
+    private static final String DEFAULT_USER_AGENT = "LinkChecker Crawler (http://morontt.github.io/link-checker/)";
 
     ArrayList<String> domains;
     ArrayList<LinkPair> pairs;
